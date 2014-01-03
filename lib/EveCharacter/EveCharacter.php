@@ -58,6 +58,9 @@ class EveCharacter implements ArrayAccess
           
     public function offsetExists($offset)
     {
+        /*
+        * As we're returning a value for everything.
+        */
         return true;
     }
            
