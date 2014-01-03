@@ -1,7 +1,7 @@
 <?php
 namespace EveCharacter;
 
-class EveCharacter implements ArrayAccess
+class EveCharacter implements \ArrayAccess
 {
 
     public static $version="1.0.0";
@@ -32,11 +32,11 @@ class EveCharacter implements ArrayAccess
      * @var int
      */
 
-    protected $defaultskill;
+    protected $defaultSkill;
 
-    public function __construct($default = 0, $characterid = undef)
+    public function __construct($default = 0, $characterid = null)
     {
-        $this->defaultskill = $default;
+        $this->defaultSkill = $default;
         $this->characterid = $characterid;
     }
 
@@ -72,29 +72,29 @@ class EveCharacter implements ArrayAccess
     public function &offsetGet($offset)
     {
         if (!isset($this->skills[$offset])) {
-            if (is_callable($this->defaultskill)) {
-                $value = call_user_func($this->defaultskill, $offset);
+            if (is_callable($this->defaultSkill)) {
+                $value = call_user_func($this->defaultSkill, $offset);
             } else {
-                $value = $this->defaultskill;
+                $value = $this->defaultSkill;
             }
             $this->skills[$offset] = $value;
         }
         return $this->skills[$offset];
     }
 
-    public function getSkill($skillid)
+    public function getSkill($skillId)
     {
-        if (isset($this->skills[$skillid])) {
-            return $this->skills[$skillid];
+        if (isset($this->skills[$skillId])) {
+            return $this->skills[$skillId];
         } else {
-            return $this->defaultskill;
+            return $this->defaultSkill;
         }
     }
 
-    public function setSkill($skillid, $skilllevel = 0)
+    public function setSkill($skillId, $skillLevel = 0)
     {
-        if (is_numeric($skillevel) && is_numeric($skillid)) {
-            $this->skills[skillid]= $skilllevel;
+        if (is_numeric($skillLevel) && is_numeric($skillId)) {
+            $this->skills[$skillId]= $skillLevel;
         } else {
             trigger_error(
                 sprintf("Can only set numeric skill levels and IDs with setSkill in ", __CLASS__),
