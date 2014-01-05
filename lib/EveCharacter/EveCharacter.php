@@ -21,7 +21,7 @@ class EveCharacter implements \ArrayAccess
 
     /**
      * @var string
-    */
+     */
 
     public $charactername;
 
@@ -43,15 +43,17 @@ class EveCharacter implements \ArrayAccess
     public function offsetSet($offset, $value)
     {
         if (is_null($offset)) {
-            trigger_error(sprintf("Trying to use %s as a list.", __CLASS__), E_USER_WARNING);
+            throw new Exception(sprintf("Trying to use %s as a list.", __CLASS__));
             return;
         }
+        if ($value>5 || $value <0) {
+            throw new Exception('Skills are limited to integers between 0 and 5');
+        }
         if (is_numeric($offset) && is_numeric($value)) {
-            $this->skills[$offset] = $value;
+            $this->skills[$offset] = floor($value);
         } else {
-            trigger_error(
-                sprintf("Can only set numeric skill levels and IDs with setSkill in ", __CLASS__),
-                E_USER_WARNING
+            throw new Exception(
+                sprintf("Can only set numeric skill levels and IDs with setSkill in ", __CLASS__)
             );
         }
     }
@@ -93,12 +95,14 @@ class EveCharacter implements \ArrayAccess
 
     public function setSkill($skillId, $skillLevel = 0)
     {
+        if ($skillLevel>5 || $skillLevel <0) {
+            throw new Exception('Skills are limited to integers between 0 and 5');
+        }
         if (is_numeric($skillLevel) && is_numeric($skillId)) {
             $this->skills[$skillId]= $skillLevel;
         } else {
-            trigger_error(
-                sprintf("Can only set numeric skill levels and IDs with setSkill in ", __CLASS__),
-                E_USER_WARNING
+            throw new Exception(
+                sprintf("Can only set numeric skill levels and IDs with setSkill in ", __CLASS__)
             );
         }
     }
@@ -107,12 +111,11 @@ class EveCharacter implements \ArrayAccess
     {
         $parsed=json_decode($json);
         foreach ($parsed as $key => $value) {
-            if (is_numeric($value) && is_numeric($key)) {
+            if (is_numeric($value) && is_numeric($key) && $value >=0 && $value <5) {
                 $this->skills[$key]=$value;
             } else {
-                trigger_error(
-                    sprintf("Can only set numeric skill levels and IDs with setSkill in ", __CLASS__),
-                    E_USER_WARNING
+                throw new Exception(
+                    sprintf("Can only set numeric skill levels and IDs with setSkill in ", __CLASS__)
                 );
             }
         }
