@@ -111,7 +111,7 @@ class EveCharacter implements \ArrayAccess
     {
         $parsed=json_decode($json);
         foreach ($parsed as $key => $value) {
-            if (is_numeric($value) && is_numeric($key) && $value >=0 && $value <5) {
+            if (is_numeric($value) && is_numeric($key) && $value >=0 && $value <=5) {
                 $this->skills[$key]=$value;
             } else {
                 throw new Exception(
