@@ -48,7 +48,6 @@ class EveCharacter implements \ArrayAccess
     {
         if (is_null($offset)) {
             throw new \Exception(sprintf("Trying to use %s as a list.", __CLASS__));
-            return;
         }
         if ($value>5 || $value <0) {
             throw new \Exception('Skills are limited to integers between 0 and 5');
