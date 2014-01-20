@@ -36,8 +36,7 @@ class EveCharacter implements \ArrayAccess
 
     public function __construct($default = 0, $characterid = null)
     {
-        if ($default<0 || $default>5)
-        {
+        if ($default<0 || $default>5) {
             throw new \Exception('Skills are limited to integers between 0 and 5');
         }
         $this->defaultSkill = (int)$default;
